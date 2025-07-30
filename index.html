@@ -81,64 +81,77 @@
 <body>
   <div class="container">
     <h1>2049.space</h1>
-    <form id="messageForm">
-      <input type="text" id="username" placeholder="Nom d'utilisateur" required />
-      <input type="password" id="password" placeholder="Mot de passe" required />
+
+    <form id="loginForm">
+      <input type="text" id="loginUser" placeholder="Nom d'utilisateur" required />
+      <input type="password" id="loginPass" placeholder="Mot de passe" required />
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <form id="messageForm" style="display:none;">
       <input type="date" id="targetDate" required />
       <textarea id="userMessage" placeholder="Ton message..." rows="5" required></textarea>
       <button type="submit">Envoyer à mon futur moi</button>
     </form>
-    <div class="small-text">Ton message sera visible uniquement à la date choisie.</div>
+
+    <div class="small-text">Tes messages seront visibles uniquement à la date choisie.</div>
   </div>
+
   <div class="messages" id="messageList"></div>
 
   <script>
-    const form = document.getElementById('messageForm');
+    const loginForm = document.getElementById('loginForm');
+    const messageForm = document.getElementById('messageForm');
     const messageList = document.getElementById('messageList');
 
-    const getMessages = () => {
-      return JSON.parse(localStorage.getItem('2049_messages') || '[]');
-    };
+    let currentUser = null;
 
-    const saveMessages = (messages) => {
-      localStorage.setItem('2049_messages', JSON.stringify(messages));
-    };
+    const getMessages = () => JSON.parse(localStorage.getItem('2049_messages') || '[]');
+    const saveMessages = (msgs) => localStorage.setItem('2049_messages', JSON.stringify(msgs));
 
     const displayMessages = () => {
       const today = new Date().toISOString().split('T')[0];
       messageList.innerHTML = '';
-      const messages = getMessages();
-
+      const messages = getMessages().filter(m => m.username === currentUser.username && m.password === currentUser.password);
       messages.forEach(msg => {
         const box = document.createElement('div');
         box.classList.add('message-box');
-
         if (today >= msg.date) {
           box.innerHTML = `<strong>${msg.username}</strong><br>${msg.message}`;
         } else {
-          box.innerHTML = `<strong>${msg.username}</strong><br><span class="locked">🔒 Message verrouillé jusqu'au ${msg.date}</span>`;
+          box.innerHTML = `<strong>${msg.username}</strong><br><span class="locked">🔒 Verrouillé jusqu'au ${msg.date}</span>`;
           box.classList.add('locked');
         }
         messageList.appendChild(box);
       });
     };
 
-    form.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const date = document.getElementById('targetDate').value;
-      const message = document.getElementById('userMessage').value;
-
-      const messages = getMessages();
-      messages.push({ username, password, date, message });
-      saveMessages(messages);
-
-      form.reset();
+      currentUser = {
+        username: document.getElementById('loginUser').value,
+        password: document.getElementById('loginPass').value
+      };
+      loginForm.style.display = 'none';
+      messageForm.style.display = 'block';
       displayMessages();
     });
 
-    displayMessages();
+    messageForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const date = document.getElementById('targetDate').value;
+      const message = document.getElementById('userMessage').value;
+      const all = getMessages();
+      all.push({
+        username: currentUser.username,
+        password: currentUser.password,
+        date,
+        message
+      });
+      saveMessages(all);
+      messageForm.reset();
+      displayMessages();
+    });
   </script>
 </body>
 </html>
