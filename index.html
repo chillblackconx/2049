@@ -12,19 +12,20 @@
       background: linear-gradient(135deg, #05001c, #110036);
       color: #eee;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      padding: 2rem;
     }
     .container {
       border: 2px solid #ff007a;
       box-shadow: 0 0 25px #ff007a;
       padding: 2rem;
       border-radius: 10px;
-      width: 90%;
+      width: 100%;
       max-width: 420px;
       background-color: rgba(10, 0, 30, 0.7);
+      margin-bottom: 2rem;
     }
     h1 {
       text-align: center;
@@ -60,19 +61,84 @@
       font-size: 0.8rem;
       color: #aaa;
     }
+    .messages {
+      max-width: 420px;
+      width: 100%;
+    }
+    .message-box {
+      border: 1px solid #aaa;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+    .locked {
+      opacity: 0.5;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>2049.space</h1>
     <form id="messageForm">
-      <input type="text" placeholder="Nom d'utilisateur" required />
-      <input type="password" placeholder="Mot de passe" required />
-      <input type="date" required />
-      <textarea placeholder="Ton message..." rows="5" required></textarea>
+      <input type="text" id="username" placeholder="Nom d'utilisateur" required />
+      <input type="password" id="password" placeholder="Mot de passe" required />
+      <input type="date" id="targetDate" required />
+      <textarea id="userMessage" placeholder="Ton message..." rows="5" required></textarea>
       <button type="submit">Envoyer à mon futur moi</button>
     </form>
-    <div class="small-text">Aucun email requis. Juste toi, et le temps.</div>
+    <div class="small-text">Ton message sera visible uniquement à la date choisie.</div>
   </div>
+  <div class="messages" id="messageList"></div>
+
+  <script>
+    const form = document.getElementById('messageForm');
+    const messageList = document.getElementById('messageList');
+
+    const getMessages = () => {
+      return JSON.parse(localStorage.getItem('2049_messages') || '[]');
+    };
+
+    const saveMessages = (messages) => {
+      localStorage.setItem('2049_messages', JSON.stringify(messages));
+    };
+
+    const displayMessages = () => {
+      const today = new Date().toISOString().split('T')[0];
+      messageList.innerHTML = '';
+      const messages = getMessages();
+
+      messages.forEach(msg => {
+        const box = document.createElement('div');
+        box.classList.add('message-box');
+
+        if (today >= msg.date) {
+          box.innerHTML = `<strong>${msg.username}</strong><br>${msg.message}`;
+        } else {
+          box.innerHTML = `<strong>${msg.username}</strong><br><span class="locked">🔒 Message verrouillé jusqu'au ${msg.date}</span>`;
+          box.classList.add('locked');
+        }
+        messageList.appendChild(box);
+      });
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const date = document.getElementById('targetDate').value;
+      const message = document.getElementById('userMessage').value;
+
+      const messages = getMessages();
+      messages.push({ username, password, date, message });
+      saveMessages(messages);
+
+      form.reset();
+      displayMessages();
+    });
+
+    displayMessages();
+  </script>
 </body>
 </html>
