@@ -93,11 +93,24 @@
       padding: 1rem;
       margin-bottom: 1rem;
       border-radius: 8px;
+      position: relative;
     }
 
     .locked {
       opacity: 0.5;
       font-style: italic;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background-color: red;
+      border: none;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     #activateMinecraft {
@@ -146,7 +159,7 @@
       const today = new Date().toISOString().split('T')[0];
       messageList.innerHTML = '';
       const messages = getMessages().filter(m => m.username === currentUser.username && m.password === currentUser.password);
-      messages.forEach(msg => {
+      messages.forEach((msg, index) => {
         const box = document.createElement('div');
         box.classList.add('message-box');
         if (today >= msg.date) {
@@ -155,10 +168,23 @@
           box.innerHTML = `<strong>${msg.username}</strong><br><span class="locked">🔒 Verrouillé jusqu'au ${msg.date}</span>`;
           box.classList.add('locked');
         }
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Supprimer';
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.onclick = () => {
+          if (confirm("Tu veux vraiment supprimer ce message ?")) {
+            const all = getMessages();
+            const filtered = all.filter((m, i) => i !== index || m.username !== currentUser.username || m.password !== currentUser.password);
+            saveMessages(filtered);
+            displayMessages();
+          }
+        };
+
+        box.appendChild(deleteBtn);
         messageList.appendChild(box);
       });
 
-      // Easter egg condition
       if (messages.length >= 11 && messages[messages.length - 1].message.trim().toLowerCase() === "technoblade never die") {
         activateMinecraft.style.display = 'block';
       }
