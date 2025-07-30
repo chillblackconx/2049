@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2049.space</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #05001c, #110036);
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      border: 2px solid #ff007a;
+      box-shadow: 0 0 25px #ff007a;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 420px;
+      background-color: rgba(10, 0, 30, 0.7);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #38b6ff;
+      margin-bottom: 1.5rem;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 0.7rem;
+      margin-bottom: 1rem;
+      border: 2px solid #ff007a;
+      border-radius: 5px;
+      background-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 10px #ff007a;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #38b6ff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      box-shadow: 0 0 20px #00fff7;
+      background-color: #00fff7;
+      color: #000;
+    }
+    .small-text {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>2049.space</h1>
+    <form id="messageForm">
+      <input type="text" placeholder="Nom d'utilisateur" required />
+      <input type="password" placeholder="Mot de passe" required />
+      <input type="date" required />
+      <textarea placeholder="Ton message..." rows="5" required></textarea>
+      <button type="submit">Envoyer à mon futur moi</button>
+    </form>
+    <div class="small-text">Aucun email requis. Juste toi, et le temps.</div>
+  </div>
+</body>
+</html>
