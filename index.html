@@ -6,20 +6,35 @@
   <title>2049.space</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --neon: #ff007a;
+      --bg-main: linear-gradient(135deg, #05001c, #110036);
+      --font: 'Orbitron', sans-serif;
+    }
+
     body {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #05001c, #110036);
+      font-family: var(--font);
+      background: var(--bg-main);
       color: #eee;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
       padding: 2rem;
+      transition: all 0.4s ease;
     }
+
+    .minecraft {
+      background: url('https://i.imgur.com/jQt7FzM.png');
+      background-size: cover;
+      font-family: "Minecraft", monospace;
+      color: #00ff00;
+    }
+
     .container {
-      border: 2px solid #ff007a;
-      box-shadow: 0 0 25px #ff007a;
+      border: 2px solid var(--neon);
+      box-shadow: 0 0 25px var(--neon);
       padding: 2rem;
       border-radius: 10px;
       width: 100%;
@@ -27,23 +42,26 @@
       background-color: rgba(10, 0, 30, 0.7);
       margin-bottom: 2rem;
     }
+
     h1 {
       text-align: center;
       font-size: 2rem;
       color: #38b6ff;
       margin-bottom: 1.5rem;
     }
+
     input, textarea, button {
       width: 100%;
       padding: 0.7rem;
       margin-bottom: 1rem;
-      border: 2px solid #ff007a;
+      border: 2px solid var(--neon);
       border-radius: 5px;
       background-color: transparent;
       color: #fff;
-      box-shadow: 0 0 10px #ff007a;
+      box-shadow: 0 0 10px var(--neon);
       font-size: 1rem;
     }
+
     button {
       background-color: #38b6ff;
       color: #000;
@@ -51,20 +69,24 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     button:hover {
       box-shadow: 0 0 20px #00fff7;
       background-color: #00fff7;
       color: #000;
     }
+
     .small-text {
       text-align: center;
       font-size: 0.8rem;
       color: #aaa;
     }
+
     .messages {
       max-width: 420px;
       width: 100%;
     }
+
     .message-box {
       border: 1px solid #aaa;
       background-color: rgba(255, 255, 255, 0.05);
@@ -72,9 +94,17 @@
       margin-bottom: 1rem;
       border-radius: 8px;
     }
+
     .locked {
       opacity: 0.5;
       font-style: italic;
+    }
+
+    #activateMinecraft {
+      display: none;
+      margin-top: 1rem;
+      background-color: #00ff00;
+      color: #000;
     }
   </style>
 </head>
@@ -94,6 +124,8 @@
       <button type="submit">Envoyer à mon futur moi</button>
     </form>
 
+    <button id="activateMinecraft">Activer mode Minecraft 🟩</button>
+
     <div class="small-text">Tes messages seront visibles uniquement à la date choisie.</div>
   </div>
 
@@ -103,6 +135,7 @@
     const loginForm = document.getElementById('loginForm');
     const messageForm = document.getElementById('messageForm');
     const messageList = document.getElementById('messageList');
+    const activateMinecraft = document.getElementById('activateMinecraft');
 
     let currentUser = null;
 
@@ -124,6 +157,11 @@
         }
         messageList.appendChild(box);
       });
+
+      // Easter egg condition
+      if (messages.length >= 11 && messages[messages.length - 1].message.trim().toLowerCase() === "technoblade never die") {
+        activateMinecraft.style.display = 'block';
+      }
     };
 
     loginForm.addEventListener('submit', (e) => {
@@ -151,6 +189,10 @@
       saveMessages(all);
       messageForm.reset();
       displayMessages();
+    });
+
+    activateMinecraft.addEventListener('click', () => {
+      document.body.classList.toggle('minecraft');
     });
   </script>
 </body>
