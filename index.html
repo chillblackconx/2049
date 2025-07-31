@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2049.space</title>
-  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -17,8 +17,9 @@
       text-align: center;
       font-size: 64px;
       color: red;
-      text-shadow: 0 0 10px red;
+      text-shadow: 0 0 20px red, 0 0 30px crimson;
       margin-top: 30px;
+      transition: all 0.3s ease;
     }
     .container {
       max-width: 600px;
@@ -26,7 +27,8 @@
       padding: 20px;
       border: 2px solid red;
       border-radius: 10px;
-      box-shadow: 0 0 15px red;
+      box-shadow: 0 0 25px red, 0 0 40px crimson;
+      transition: all 0.3s ease;
     }
     input, button, textarea {
       width: 100%;
@@ -47,6 +49,7 @@
       margin-top: 10px;
       padding: 10px;
       position: relative;
+      box-shadow: 0 0 15px red;
     }
     .delete-btn {
       position: absolute;
@@ -62,7 +65,7 @@
   </style>
 </head>
 <body>
-  <h1>2049</h1>
+  <h1 id="mainLogo">2049</h1>
   <div class="container">
     <div id="auth">
       <input id="username" placeholder="Nom d'utilisateur">
@@ -139,19 +142,26 @@
 
     function enableMinecraft() {
       document.querySelectorAll('.container, .message').forEach(el => {
-        el.style.borderColor = 'green';
-        el.style.boxShadow = '0 0 10px green';
+        el.style.borderColor = 'lime';
+        el.style.boxShadow = '0 0 15px lime';
       });
+      document.getElementById('mainLogo').style.color = 'lime';
+      document.getElementById('mainLogo').style.textShadow = '0 0 15px lime';
     }
 
     function enableRGB() {
       let hue = 0;
       setInterval(() => {
         hue = (hue + 1) % 360;
-        document.body.style.borderColor = `hsl(${hue}, 100%, 50%)`;
+        const color = `hsl(${hue}, 100%, 50%)`;
+        document.body.style.borderColor = color;
         document.querySelectorAll('.container, .message').forEach(el => {
-          el.style.boxShadow = `0 0 10px hsl(${hue}, 100%, 50%)`;
+          el.style.boxShadow = `0 0 10px ${color}`;
+          el.style.borderColor = color;
         });
+        const logo = document.getElementById('mainLogo');
+        logo.style.color = color;
+        logo.style.textShadow = `0 0 15px ${color}`;
       }, 100);
     }
 
@@ -160,6 +170,9 @@
         el.style.borderColor = color;
         el.style.boxShadow = `0 0 10px ${color}`;
       });
+      const logo = document.getElementById('mainLogo');
+      logo.style.color = color;
+      logo.style.textShadow = `0 0 15px ${color}`;
     }
   </script>
 </body>
