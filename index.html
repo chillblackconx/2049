@@ -32,11 +32,24 @@
       color: #00ff00;
     }
 
+    .minecraft .container,
     .minecraft .message-box {
-      background-color: rgba(0, 0, 0, 0.8);
-      border: 2px solid #00ff00;
-      box-shadow: 0 0 12px #00ff00;
-      color: #00ff00;
+      border-color: #00ff00 !important;
+      box-shadow: 0 0 12px #00ff00 !important;
+    }
+
+    .rgb {
+      animation: rainbow 5s infinite linear;
+    }
+
+    @keyframes rainbow {
+      0% { border-color: red; }
+      16% { border-color: orange; }
+      33% { border-color: yellow; }
+      50% { border-color: green; }
+      66% { border-color: blue; }
+      83% { border-color: indigo; }
+      100% { border-color: violet; }
     }
 
     .container {
@@ -112,11 +125,11 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      background-color: red;
+      background-color: transparent;
       border: none;
-      color: white;
-      padding: 0.3rem 0.6rem;
-      border-radius: 5px;
+      color: red;
+      font-weight: bold;
+      font-size: 1.2rem;
       cursor: pointer;
     }
 
@@ -136,10 +149,39 @@
       text-align: center;
       text-shadow: 0 0 5px #00ff00;
     }
+
+    #colorPanel {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 1rem;
+      border: 2px solid var(--neon);
+      border-radius: 8px;
+      display: none;
+      z-index: 100;
+    }
+    #colorToggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div id="colorToggle">🎨 Couleurs</div>
+  <div id="colorPanel">
+    <label>Couleur principale :</label>
+    <input type="color" id="mainColor" value="#ff007a"><br><br>
+    <label>Couleur fond :</label>
+    <input type="color" id="bgColor" value="#05001c">
+  </div>
+
+  <div class="container" id="mainContainer">
     <h1>2049.space</h1>
 
     <form id="loginForm">
@@ -160,86 +202,6 @@
     <div class="small-text">Tes messages seront visibles uniquement à la date choisie.</div>
   </div>
 
-  <div class="messages" id="messageList"></div>
-
-  <script>
-    const loginForm = document.getElementById('loginForm');
-    const messageForm = document.getElementById('messageForm');
-    const messageList = document.getElementById('messageList');
-    const activateMinecraft = document.getElementById('activateMinecraft');
-    const tribute = document.getElementById('tribute');
-
-    let currentUser = null;
-
-    const getMessages = () => JSON.parse(localStorage.getItem('2049_messages') || '[]');
-    const saveMessages = (msgs) => localStorage.setItem('2049_messages', JSON.stringify(msgs));
-
-    const displayMessages = () => {
-      const today = new Date().toISOString().split('T')[0];
-      messageList.innerHTML = '';
-      const messages = getMessages().filter(m => m.username === currentUser.username && m.password === currentUser.password);
-      messages.forEach((msg, index) => {
-        const box = document.createElement('div');
-        box.classList.add('message-box');
-        if (today >= msg.date) {
-          box.innerHTML = `<strong>${msg.username}</strong><br>${msg.message}`;
-        } else {
-          box.innerHTML = `<strong>${msg.username}</strong><br><span class="locked">🔒 Verrouillé jusqu'au ${msg.date}</span>`;
-          box.classList.add('locked');
-        }
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Supprimer';
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.onclick = () => {
-          if (confirm("Tu veux vraiment supprimer ce message ?")) {
-            const all = getMessages();
-            const filtered = all.filter((m, i) => !(i === index && m.username === currentUser.username && m.password === currentUser.password));
-            saveMessages(filtered);
-            displayMessages();
-          }
-        };
-
-        box.appendChild(deleteBtn);
-        messageList.appendChild(box);
-      });
-
-      if (messages.length >= 11 && messages[messages.length - 1].message.trim().toLowerCase() === "technoblade never die") {
-        activateMinecraft.style.display = 'block';
-      }
-    };
-
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      currentUser = {
-        username: document.getElementById('loginUser').value,
-        password: document.getElementById('loginPass').value
-      };
-      loginForm.style.display = 'none';
-      messageForm.style.display = 'block';
-      displayMessages();
-    });
-
-    messageForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const date = document.getElementById('targetDate').value;
-      const message = document.getElementById('userMessage').value;
-      const all = getMessages();
-      all.push({
-        username: currentUser.username,
-        password: currentUser.password,
-        date,
-        message
-      });
-      saveMessages(all);
-      messageForm.reset();
-      displayMessages();
-    });
-
-    activateMinecraft.addEventListener('click', () => {
-      document.body.classList.toggle('minecraft');
-      tribute.style.display = 'block';
-    });
-  </script>
+  <!-- Le reste du code JS ira ici -->
 </body>
 </html>
