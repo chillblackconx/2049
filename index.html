@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2049.space</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="2049-violet-rose.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -13,14 +13,33 @@
       background-color: #000010;
       color: white;
     }
+
+    .logo-img {
+      display: block;
+      margin: 30px auto 10px auto;
+      width: 120px;
+      filter: drop-shadow(0 0 15px magenta);
+      animation: pulse 3s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        filter: drop-shadow(0 0 15px violet);
+      }
+      100% {
+        filter: drop-shadow(0 0 25px hotpink);
+      }
+    }
+
     h1 {
       text-align: center;
       font-size: 64px;
       color: red;
       text-shadow: 0 0 20px red, 0 0 30px crimson;
-      margin-top: 30px;
+      margin-top: 10px;
       transition: all 0.3s ease;
     }
+
     .container {
       max-width: 600px;
       margin: auto;
@@ -30,6 +49,7 @@
       box-shadow: 0 0 25px red, 0 0 40px crimson;
       transition: all 0.3s ease;
     }
+
     input, button, textarea {
       width: 100%;
       margin: 10px 0;
@@ -38,11 +58,13 @@
       border-radius: 5px;
       font-size: 16px;
     }
+
     button {
       background-color: red;
       color: white;
       cursor: pointer;
     }
+
     .message {
       background: #111;
       border: 1px solid red;
@@ -51,6 +73,7 @@
       position: relative;
       box-shadow: 0 0 15px red;
     }
+
     .delete-btn {
       position: absolute;
       top: 5px;
@@ -58,6 +81,7 @@
       color: red;
       cursor: pointer;
     }
+
     #colorPicker {
       margin: 10px auto;
       display: block;
@@ -65,21 +89,28 @@
   </style>
 </head>
 <body>
+
+  <!-- Logo animé -->
+  <img src="2049-violet-rose.png" alt="Logo 2049" class="logo-img" />
+
   <h1 id="mainLogo">2049</h1>
+
   <div class="container">
     <div id="auth">
-      <input id="username" placeholder="Nom d'utilisateur">
-      <input id="password" placeholder="Mot de passe" type="password">
+      <input id="username" placeholder="Nom d'utilisateur" />
+      <input id="password" placeholder="Mot de passe" type="password" />
       <button onclick="login()">Se connecter</button>
     </div>
-    <div id="main" style="display:none">
-      <input id="unlockDate" type="date">
+
+    <div id="main" style="display: none">
+      <input id="unlockDate" type="date" />
       <textarea id="message" placeholder="Message..."></textarea>
       <button onclick="saveMessage()">Enregistrer le message</button>
-      <input type="color" id="colorPicker" onchange="changeColor(this.value)">
+      <input type="color" id="colorPicker" onchange="changeColor(this.value)" />
       <div id="messages"></div>
     </div>
   </div>
+
   <script>
     const userData = JSON.parse(localStorage.getItem('2049_users') || '{}');
     let currentUser = null;
