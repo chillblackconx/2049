@@ -26,9 +26,16 @@
     }
 
     .minecraft {
-      background: url('https://i.imgur.com/jQt7FzM.png');
+      background: url('https://wallpapercave.com/wp/wp7011464.png') no-repeat center center fixed;
       background-size: cover;
       font-family: "Minecraft", monospace;
+      color: #00ff00;
+    }
+
+    .minecraft .message-box {
+      background-color: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 12px #00ff00;
       color: #00ff00;
     }
 
@@ -119,6 +126,16 @@
       background-color: #00ff00;
       color: #000;
     }
+
+    #tribute {
+      display: none;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #00ff00;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 0 5px #00ff00;
+    }
   </style>
 </head>
 <body>
@@ -139,6 +156,7 @@
 
     <button id="activateMinecraft">Activer mode Minecraft 🟩</button>
 
+    <div id="tribute">Tu as raison. Il meurt jamais. 🐷👑</div>
     <div class="small-text">Tes messages seront visibles uniquement à la date choisie.</div>
   </div>
 
@@ -149,6 +167,7 @@
     const messageForm = document.getElementById('messageForm');
     const messageList = document.getElementById('messageList');
     const activateMinecraft = document.getElementById('activateMinecraft');
+    const tribute = document.getElementById('tribute');
 
     let currentUser = null;
 
@@ -175,7 +194,7 @@
         deleteBtn.onclick = () => {
           if (confirm("Tu veux vraiment supprimer ce message ?")) {
             const all = getMessages();
-            const filtered = all.filter((m, i) => i !== index || m.username !== currentUser.username || m.password !== currentUser.password);
+            const filtered = all.filter((m, i) => !(i === index && m.username === currentUser.username && m.password === currentUser.password));
             saveMessages(filtered);
             displayMessages();
           }
@@ -219,6 +238,7 @@
 
     activateMinecraft.addEventListener('click', () => {
       document.body.classList.toggle('minecraft');
+      tribute.style.display = 'block';
     });
   </script>
 </body>
