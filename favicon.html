@@ -1,1 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>2049 - RGB Logo</title>
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
 
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 100px;
+      text-shadow: 0 0 20px white;
+      animation: rgbGlow 3s infinite linear;
+    }
+
+    @keyframes rgbGlow {
+      0% { color: red; text-shadow: 0 0 10px red; }
+      25% { color: lime; text-shadow: 0 0 10px lime; }
+      50% { color: cyan; text-shadow: 0 0 10px cyan; }
+      75% { color: violet; text-shadow: 0 0 10px violet; }
+      100% { color: red; text-shadow: 0 0 10px red; }
+    }
+  </style>
+</head>
+<body>
+  <h1>2049</h1>
+</body>
+</html>
